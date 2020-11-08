@@ -1,11 +1,17 @@
 Package: cartcpp
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Efficient implementation of CART and Random Forest algorithms in Cpp
+Version: 0.0.1
 Date: 2020-11-08
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: person("Renat", "Sergazinov",email = "mrsergazinov@stat.tamu.edu",role =c("aut", "cre"))
+Maintainer: <mrsergazinov@stat.tamu.edu>
+Description: This package implements an efficient CART model with C++ and Armadillo data structures and algorithms. 
+The CART model is able to train on the data and output predictions. Additionally, the model can select a random subset of 
+features at each split. Furthermore, the tree model has options for multiple stopping criteria such as maximum depth or 
+minimum samples required to be a leaf node.
+The package also implement a random forest algorithm. The random forest implementation has options for the number of 
+estimators and the parameters for each estimator. Since random forests are easily parallelizable, the implementation has an 
+option to run in parallel.
+License: GPL-2
 Imports: Rcpp (>= 1.0.5)
 LinkingTo: Rcpp, RcppArmadillo
