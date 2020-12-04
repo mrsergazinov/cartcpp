@@ -17,8 +17,8 @@ public:
   Node* _left;
   Node* _right;
   int _depth;
-  arma::mat* _dataSet;
-  arma::colvec* _label;
+  arma::uword _beginRow;
+  arma::uword _endRow;
   int _featureIndex;
   double _splitValue;
   double _classResult;
@@ -37,10 +37,10 @@ public:
 
 protected:
   // protected methods
-  void buildTree(Node* nd);
-  bool stop(const Node* nd) const;
-  void split(Node* nd);
-  void classResult(Node* nd, const int treeType);
+  void buildTree(Node* nd, arma::mat &X, arma::colvec &Y);
+  bool stop(const Node* nd, arma::mat &X, arma::colvec &Y) const;
+  void split(Node* nd, arma::mat &X, arma::colvec &Y);
+  void classResult(Node* nd, arma::mat &X, arma::colvec &Y) const;
   double gini(const arma::mat& X, const arma::colvec& Y, const arma::uword& featureId, const double& featureVal) const;
   double mse(const arma::mat& X, const arma::colvec& Y, const arma::uword& featureId, const double& featureVal) const;
 
