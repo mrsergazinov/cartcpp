@@ -28,8 +28,8 @@ class Tree {
 public:
   // constructors
   Tree();
-  Tree(const int& ident, const int& treeType, const arma::uword& numFeatures,
-       const int& maxDepth, const int& minCount);
+  Tree(const int& ident, const int& treeType, const arma::uword& maxNumFeatures,
+       const arma::uword& numFeatures, const int& maxDepth, const int& minCount);
 
   // public methods
   void train(arma::mat& X, arma::colvec& Y);
@@ -39,13 +39,14 @@ protected:
   // protected methods
   void buildTree(Node* nd);
   bool stop(const Node* nd) const;
-  bool split(Node* nd);
+  void split(Node* nd);
   void classResult(Node* nd, const int treeType);
   double gini(const arma::mat& X, const arma::colvec& Y, const arma::uword& featureId, const double& featureVal) const;
   double mse(const arma::mat& X, const arma::colvec& Y, const arma::uword& featureId, const double& featureVal) const;
 
 protected:
   // protected fields
+  arma::uword _maxNumFeatures; // ratio of features selected at each split
   arma::uword _numFeatures; // ratio of features selected at each split
   Node* _root;
   int _id;
