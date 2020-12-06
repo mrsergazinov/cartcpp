@@ -14,7 +14,24 @@ Tree::Tree(const int& ident, const int& treeType, const arma::uword& maxNumFeatu
   _maxNumFeatures(maxNumFeatures),
   _numFeatures(numFeatures),
   _maxDepth(maxDepth),
-  _minCount(minCount) {}
+  _minCount(minCount) {
+  // Input checks
+  if (_treeType < 0 || _treeType > 1) {
+    throw std::range_error("Tree type should be either 0 or 1");
+  }
+  if (_maxNumFeatures <= 0) {
+    throw std::range_error("Max number of features should be > 0");
+  }
+  if (_numFeatures <= 0) {
+    throw std::range_error("Number of features selected at each split should be > 0");
+  }
+  if (_maxDepth <= 0) {
+    throw std::range_error("Max depth > 0");
+  }
+  if (_minCount <= 0) {
+    throw std::range_error("Min count for a leaf node should be > 0");
+  }
+}
 
 // Methods
 void Tree::train(arma::mat &X, arma::colvec &Y) {
@@ -22,7 +39,16 @@ void Tree::train(arma::mat &X, arma::colvec &Y) {
   // Output: none
   // Process: build a decision tree
 
-  //TODO: make compatibility checks
+  // Input checks
+  if (X.n_cols != _maxNumFeatures) {
+    throw std::range_error("Dataset should have number of features = max number of features");
+  }
+  if (X.n_rows <= 0) {
+    throw std::range_error("Data set should contain at least 1 data row");
+  }
+  if (Y.n_elem != X.n_rows) {
+    throw std::range_error("Mismatch between dimensions of X and Y");
+  }
 
   _root = new Node(0); // create root node
   _root->_dataPoints = arma::regspace<arma::uvec>(0, 1, X.n_rows - 1); // feed data to the root node
@@ -231,7 +257,13 @@ double Tree::gini(const std::map<double, int>& classSetLeft, const std::map<doub
 }
 
 arma::colvec Tree::predict(const arma::mat& X) const {
-  // TODO: Add input checks
+  // Input checks
+  if (X.n_rows <= 0) {
+    throw std::range_error("Data set should contain at least 1 data row");
+  }
+  if (X.n_cols != _maxNumFeatures) {
+    throw std::range_error("Data set should have the number of features = max number of features");
+  }
 
   // starting at the root
   Node* nd = _root;
