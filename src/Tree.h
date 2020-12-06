@@ -35,11 +35,11 @@ public:
   // public methods
   void train(arma::mat& X, arma::colvec& Y);
   arma::colvec predict(const arma::mat& X) const;
-  // void print() const;
+  arma::mat print() const;
 
 protected:
   // protected methods
-  int printNode(Node* nd) const;
+  void printNode(Node* nd, arma::mat& tr) const;
   void buildTree(Node* nd, arma::mat &X, arma::colvec &Y);
   bool stop(const Node* nd, arma::colvec &Y) const;
   bool split(Node* nd, arma::mat &X, arma::colvec &Y);
