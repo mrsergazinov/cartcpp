@@ -163,25 +163,88 @@ void Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
   nd->_right->_dataPoints = rightNodeDatapoints;
 }
 
-bool Tree::stop(const Node* nd, arma::mat &X, arma::colvec &Y) const {
+bool Tree::stop(const Node* nd, arma::colvec &Y) const {
   // Input: node, data
   // Output: boolean indicating whether the node can be split
   // Process: check if the node can be split
 
-  // TODO: fill-in the code
   // check that depth is less than maxDepth
+  if (nd->_depth > _maxDepth) {
+    return true;
+  }
   // check that more than minCount number of points for a leaf
+  if (nd->_dataPoints.n_elem <= _minCount) {
+    return true;
+  }
   // check that the label pool is not homogenuous for a classification tree
-  return false;
+  bool first_iter = true;
+  double nw = 0.0, prev = 0.0;
+  for (const auto& point : nd->_dataPoints) {
+    prev = nw;
+    nw = Y(point);
+
+    if (first_iter) {
+      first_iter = false;
+      prev = nw;
+    }
+
+    if (nw != prev) {
+      return false;
+    }
+  }
+  return true;
 }
 
-void Tree::classResult(Node* nd, arma::mat &X, arma::colvec &Y) const {
+void Tree::classResult(Node* nd, arma::colvec &Y) const {
   // Input: node, data
   // Output: none
   // Process: calculate leaf value based on the data
 
-  //TODO: fill-in the code
-  nd->_classResult = 1;
+  nd->_leaf = true;
+  // type: classification tree
+  if (_treeType == 0) {
+    std::map<double, double> classSet;
+    double count = 0;
+    for (const auto& point : nd->_dataPoints) {
+      classSet[Y(point)] += 1;
+      if (classSet[Y(point)] > count) {
+        count = classSet[Y(point)];
+        nd->_classResult = Y(point);
+      }
+    }
+  }
+  // type: regression tree
+  else {
+    nd->_classResult = arma::mean(Y(nd->_dataPoints));
+  }
+}
+
+double Tree::gini(const std::map<double, int>& classSetLeft, const std::map<double, int>& classSetRight,
+                  const double& totalSize) const {
+  double giniVal = 0.0;
+  double leftScore = 0.0;
+  double leftSize = 0.0;
+  double rightScore = 0.0;
+  arma::uword rightSize = 0;
+  for (auto& classVal : classSetLeft) {
+    leftSize += classVal.second;
+    leftScore += classVal.second * classVal.second;
+  }
+  std::cout << "leftSize: " << leftSize << std::endl;
+  std::cout << "leftScore: " << leftScore << std::endl;
+  if (leftSize != 0.0) {
+    giniVal +=  (1.0 - leftScore / (leftSize * leftSize)) * (leftSize / totalSize);
+  }
+  for (auto& classVal : classSetRight) {
+    rightSize += classVal.second;
+    rightScore += classVal.second * classVal.second;
+  }
+  std::cout << "rightSize: " << rightSize << std::endl;
+  std::cout << "rightScore: " << rightScore << std::endl;
+  if (rightSize != 0.0) {
+    giniVal += (1.0 - rightScore / (rightSize * rightSize)) * (rightSize / totalSize);
+  }
+  return giniVal;
 }
 
 void Tree::print() const {
