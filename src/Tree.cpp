@@ -254,25 +254,32 @@ arma::colvec Tree::predict(const arma::mat& X) const {
   return Ypred;
 }
 
-// void Tree::print() const {
-//   std::cout << "Is root a leaf: " << _root->_leaf << std::endl;
-//   Tree::printNode(_root);
-// }
-//
-// int Tree::printNode(Node* nd) const {
-//   if (nd == nullptr) {
-//     return 0;
-//   }
-//   if (nd->_leaf) {
-//     std::cout << "Leaf node with result: " << nd->_classResult << std::endl << std::endl;
-//   } else {
-//     std::cout << "Not a leaf node" << std::endl;
-//     std::cout << "Feature index: " << std::endl << nd->_featureIndex << std::endl;
-//     std::cout << "Split value: " << std::endl << nd->_splitValue << std::endl;
-//     std::cout << "Left set: " << std::endl << nd->_left->_dataPoints << std::endl;
-//     std::cout << "Right set: " << std::endl << nd->_right->_dataPoints << std::endl << std::endl;
-//   }
-//   Tree::printNode(nd->_left);
-//   Tree::printNode(nd->_right);
-//   return 0;
-// }
+arma::mat Tree::print() const {
+  // print tree recursively starting from a root
+  // matrix has
+  // 1st column: depth
+  // 2nd column: leaf or not (1 - leaf, 0 -  not a leaf)
+  // 3rd column: feature index
+  // 4th column: split value
+  // 5th column: class result if leaf
+  // first the left node row is added, then right node
+  arma::mat tr(0, 5);
+  Node* nd = _root;
+  printNode(nd, tr);
+
+  return tr;
+}
+
+void Tree::printNode(Node* nd, arma::mat& tr) const {
+  if (nd->_leaf) {
+    tr.insert_rows(tr.n_rows, 1);
+    arma::rowvec vec = {(double)nd->_depth, 1, 0, 0, nd->_classResult};
+    tr.row(tr.n_rows - 1) = vec;
+  } else {
+    tr.insert_rows(tr.n_rows, 1);
+    arma::rowvec vec = {(double)nd->_depth, 0, (double)nd->_featureIndex,  nd->_splitValue, 0};
+    tr.row(tr.n_rows - 1) = vec;
+    printNode(nd->_left, tr);
+    printNode(nd->_right, tr);
+  }
+}
