@@ -80,3 +80,26 @@ void Tree::classResult(Node* nd, arma::mat &X, arma::colvec &Y) const {
   //TODO: fill-in the code
   nd->_classResult = 1;
 }
+
+void Tree::print() const {
+  std::cout << "Is root a leaf: " << _root->_leaf << std::endl;
+  Tree::printNode(_root);
+}
+
+int Tree::printNode(Node* nd) const {
+  if (nd == nullptr) {
+    return 0;
+  }
+  if (nd->_leaf) {
+    std::cout << "Leaf node with result: " << nd->_classResult << std::endl << std::endl;
+  } else {
+    std::cout << "Not a leaf node" << std::endl;
+    std::cout << "Feature index: " << std::endl << nd->_featureIndex << std::endl;
+    std::cout << "Split value: " << std::endl << nd->_splitValue << std::endl;
+    std::cout << "Left set: " << std::endl << nd->_left->_dataPoints << std::endl;
+    std::cout << "Right set: " << std::endl << nd->_right->_dataPoints << std::endl << std::endl;
+  }
+  Tree::printNode(nd->_left);
+  Tree::printNode(nd->_right);
+  return 0;
+}
