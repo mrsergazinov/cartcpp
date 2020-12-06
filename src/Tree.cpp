@@ -258,6 +258,30 @@ double Tree::gini(const std::map<double, int>& classSetLeft, const std::map<doub
   return giniVal;
 }
 
+arma::colvec Tree::predict(const arma::mat& X) const {
+  // TODO: Add input checks
+
+  // starting at the root
+  Node* nd = _root;
+  // vector to store predicted values
+  arma::colvec Ypred(X.n_rows);
+
+  // start at the root node and conseqeuntly go down the tree until a leaf node is reached
+  // repeat for each data row
+  for (arma::uword row = 0; row < X.n_rows; ++row) {
+    while (!nd->_leaf) {
+      if (X(row, nd->_featureIndex) <= nd->_splitValue) {
+        nd = nd->_left;
+      } else {
+        nd = nd->_right;
+      }
+    }
+    Ypred(row) = nd->_classResult;
+    nd = _root;
+  }
+  return Ypred;
+}
+
 void Tree::print() const {
   std::cout << "Is root a leaf: " << _root->_leaf << std::endl;
   Tree::printNode(_root);
