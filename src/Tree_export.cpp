@@ -9,5 +9,9 @@
 RCPP_MODULE(RcppTreeEx){
   Rcpp::class_<Tree>("Tree")
   .default_constructor()
-  .method("add", &Tree::add);
+  .constructor<int, int, arma::uword, arma::uword, int, int>()
+  .method("train", &Tree::train)
+  .method("predict", &Tree::predict)
+  .method("train", &Tree::train)
+  .method("print", &Tree::print);
 }
