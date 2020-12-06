@@ -1,8 +1,4 @@
----
-title: "cartcpp package"
-output: html_document
-bibliography: bibliography.bib
----
+## Cartcpp package
 
 ### Description
 A decision tree is a predictive model, which uses a tree structure to go from observations to conclusions.
