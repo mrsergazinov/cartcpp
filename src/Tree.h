@@ -1,6 +1,7 @@
 #ifndef Tree_H
 #define Tree_H
-
+#include <map>
+#include <iostream>
 #include "RcppArmadillo.h"
 // [[Rcpp::depends(RcppArmadillo)]]
 
