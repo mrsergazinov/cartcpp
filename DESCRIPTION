@@ -13,7 +13,9 @@ Description: This package offers an efficient implementation of CART model with 
   The package also implements a random forest algorithm. The random forest implementation has options for the 
   number of estimators and the parameters for each estimator.
 License: GPL-3
+Encoding: UTF-8
 Imports: Rcpp (>= 1.0.5)
+Depends: methods
 LazyData: true
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.1.1
