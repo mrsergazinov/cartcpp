@@ -11,8 +11,7 @@ depth is reached.
 
 The term CART (classification and regression tree) was introduced by Breiman, 1984 to refer to
 both types of trees. A single CART model can be used off-the-shelf since it is invariant under feature
-transformations and scaling, robust to the inclusion of irrelevant features, and produces interpretable results.
-Nevertheless, a single CART is rarely accurate as it frequently suffers from overfitting. Hence, Breiman, 2001 has proposed a random forest algorithm, which essentially averages the results of multiple trees trained on different parts of the training data. Unlike the traditional bagging approach, where an ensemble of models is trained on different subsets of the data, random forests are trained so that at each node split is selected based on a random subset of features. This technique allows reducing the correlation between the individual trees greatly. A peculiar characteristic of random forests is their resistance to overfitting. Indeed, it can be shown that the accuracy of predictions increases nearly monotonically with the complexity (size) of the random forest.
+transformations and scaling, robust to the inclusion of irrelevant features, and produces interpretable results. CART freqruntly serves as a workhorse for other advanced models such as random forest and gradient boosted trees. These methods can be built rather quickly once the CART model has been implemented. 
 
 ### Functionality
 
@@ -20,10 +19,7 @@ This package offers an efficient implementation of CART model with Rcpp and  Rcp
 structures and algorithms. The CART model is able to train on the data and output predictions.
 Additionally, the model is able to select a random subset of features at each split. Finally, the tree
 model also has options for multiple stopping criteria such as maximum depth or minimum samples
-required to be a leaf node.
-
-The package also implements a random forest algorithm. The random forest implementation has options for the 
-number of estimators and the parameters for each estimator.
+required to be a leaf node. Furthermore, the model is able to print its strucutre together with the decision rules in the matrix form, which allows for conveiniet examination. 
 
 
 

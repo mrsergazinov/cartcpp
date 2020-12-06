@@ -1,7 +1,7 @@
 Package: cartcpp
 Type: Package
 Title: Efficient CART with Rcpp and Rcpp Armadillo
-Version: 0.1
+Version: 1.0
 Date: 2020-11-17
 Author: c(person("Renat", "Sergazinov", email = "mrsergazinov@tamu.edu", role = "aut"))
 Maintainer: <mrsergazinov@tamu.edu>
@@ -10,8 +10,6 @@ Description: This package offers an efficient implementation of CART model with 
   Additionally, the model is able to select a random subset of features at each split. Finally, the tree
   model also has options for multiple stopping criteria such as maximum depth or minimum samples
   required to be a leaf node.
-  The package also implements a random forest algorithm. The random forest implementation has options for the 
-  number of estimators and the parameters for each estimator.
 License: GPL-3
 Encoding: UTF-8
 Imports: Rcpp (>= 1.0.5)
