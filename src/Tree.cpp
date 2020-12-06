@@ -37,16 +37,22 @@ void Tree::buildTree(Node* nd, arma::mat &X, arma::colvec &Y){
   if (Tree::stop(nd, Y)){
     classResult(nd, Y);
   } else{
-    split(nd, X, Y);
-    Tree::buildTree(nd->_left, X, Y);
-    Tree::buildTree(nd->_right, X, Y);
+    if (split(nd, X, Y)) {
+      Tree::buildTree(nd->_left, X, Y);
+      Tree::buildTree(nd->_right, X, Y);
+    } else {
+      classResult(nd, Y);
+    }
   }
 }
 
-void Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
+bool Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
   // Input: node, data
   // Output: none
   // Process: split the node
+
+  // flag indicating wether at least one splitting value was found
+  bool splitted = false;
 
   // data points sets for next nodes
   arma::uvec leftNodeDatapoints, rightNodeDatapoints;
@@ -113,6 +119,7 @@ void Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
           std::cout << "index for left node: " <<index.head(splitIndex + 1) << std::endl;
           leftNodeDatapoints = nd->_dataPoints(index.head(splitIndex + 1));
           rightNodeDatapoints = nd->_dataPoints(index.tail(index.n_elem - splitIndex - 1));
+          splitted = true;
           std::cout << "Data points for left node are: " << std::endl << leftNodeDatapoints << std::endl;
           std::cout << "Data points for right node are: " << std::endl << rightNodeDatapoints << std::endl;
         }
@@ -145,6 +152,7 @@ void Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
           nd->_splitValue = X(nd->_dataPoints(index(splitIndex)), feature);
           leftNodeDatapoints = nd->_dataPoints(index.head(splitIndex + 1));
           rightNodeDatapoints = nd->_dataPoints(index.tail(index.n_elem - splitIndex - 1));
+          splitted = true;
           std::cout << "index for left node: " << std::endl << index.head(splitIndex + 1) << std::endl;
           std::cout << "Data points for left node are: " << std::endl << leftNodeDatapoints << std::endl;
           std::cout << "Data points for right node are: " << std::endl << rightNodeDatapoints << std::endl;
@@ -157,10 +165,13 @@ void Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
     classSetRight = classSet;
   }
 
-  nd->_left = new Node(nd->_depth + 1);
-  nd->_right = new Node(nd->_depth + 1);
-  nd->_left->_dataPoints = leftNodeDatapoints;
-  nd->_right->_dataPoints = rightNodeDatapoints;
+  if (splitted) {
+    nd->_left = new Node(nd->_depth + 1);
+    nd->_right = new Node(nd->_depth + 1);
+    nd->_left->_dataPoints = leftNodeDatapoints;
+    nd->_right->_dataPoints = rightNodeDatapoints;
+  }
+  return splitted;
 }
 
 bool Tree::stop(const Node* nd, arma::colvec &Y) const {
