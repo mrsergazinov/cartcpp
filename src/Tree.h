@@ -42,7 +42,7 @@ protected:
   int printNode(Node* nd) const;
   void buildTree(Node* nd, arma::mat &X, arma::colvec &Y);
   bool stop(const Node* nd, arma::colvec &Y) const;
-  void split(Node* nd, arma::mat &X, arma::colvec &Y);
+  bool split(Node* nd, arma::mat &X, arma::colvec &Y);
   void classResult(Node* nd, arma::colvec &Y) const;
   double gini(const std::map<double, int>& classSetLeft, const std::map<double, int>& classSetRight,
               const double& totalSize) const;
