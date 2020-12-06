@@ -35,7 +35,7 @@ public:
   // public methods
   void train(arma::mat& X, arma::colvec& Y);
   arma::colvec predict(const arma::mat& X) const;
-  void print() const;
+  // void print() const;
 
 protected:
   // protected methods

@@ -83,19 +83,12 @@ bool Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
   }
   std::map<double, int> classSetLeft, classSetRight(classSet);
 
-  std::cout << "Arrived at a loop" << std::endl;
   for (arma::uword feature : featureSubsetIndex) {
     arma::uvec indFeature = {feature};
     // nd->_dataPoints - rows of dataset (X, Y) correspoding to the node
     // index - vector which describes the sorted order of the elements of the column "feature" among the "dataPoints"
     index = arma::sort_index(X.submat(nd->_dataPoints, indFeature));
-    std::cout << "Iteration for feature: " << feature << std::endl;
-    std::cout << "Sorted index array:" << std::endl;
-    std::cout << index << std::endl;
     for (arma::uword splitIndex = 0; splitIndex < index.n_elem - 1; ++splitIndex) {
-      std::cout << "index(splitIndex): " << index(splitIndex) << std::endl;
-      std::cout << "nd->_dataPoints(index(splitIndex))): " << nd->_dataPoints(index(splitIndex)) << std::endl;
-
       // type: classification tree
       if (_treeType == 0) {
         ++classSetLeft[Y(nd->_dataPoints(index(splitIndex)))];
@@ -104,24 +97,17 @@ bool Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
         if(X(nd->_dataPoints(index(splitIndex)), feature) != X(nd->_dataPoints(index(splitIndex + 1)), feature)) {
           // check that this is NEW split value i.e. different from the previous one
           // this is to avoid unrealistic splitting
-          std::cout << "New gini score calculated: different split value" << std::endl;
           scoreGiniNew = gini(classSetLeft, classSetRight, nd->_dataPoints.n_elem);
-          std::cout << "scoreGiniNew: " << scoreGiniNew << std::endl;
         }
 
         // update node and min Gini score values if the current Gini value is less than the known min
         if (scoreGiniNew < scoreGiniPrev) {
-          std::cout << "Previous gini score: " << scoreGiniPrev << std::endl;
-          std::cout << "The splitting value is updated" << std::endl;
           scoreGiniPrev = scoreGiniNew;
           nd->_featureIndex = feature;
           nd->_splitValue = X(nd->_dataPoints(index(splitIndex)), feature);
-          std::cout << "index for left node: " <<index.head(splitIndex + 1) << std::endl;
           leftNodeDatapoints = nd->_dataPoints(index.head(splitIndex + 1));
           rightNodeDatapoints = nd->_dataPoints(index.tail(index.n_elem - splitIndex - 1));
           splitted = true;
-          std::cout << "Data points for left node are: " << std::endl << leftNodeDatapoints << std::endl;
-          std::cout << "Data points for right node are: " << std::endl << rightNodeDatapoints << std::endl;
         }
       }
       // type: regression tree
@@ -129,33 +115,23 @@ bool Tree::split(Node *nd, arma::mat &X, arma::colvec &Y) {
         // calculate MSE based on the current splitting value
         // make sure that the split is realistic: current splitting value is different from the previous one
         if(X(nd->_dataPoints(index(splitIndex)), feature) != X(nd->_dataPoints(index(splitIndex + 1)), feature)) {
-          std::cout << "MSE updated" << std::endl;
+
           arma::colvec leftY = Y(index.head(splitIndex + 1));
-          std::cout << "left Y: " << std::endl << leftY << std::endl;
           arma::colvec rightY = Y(index.tail(index.n_elem - splitIndex - 1));
-          std::cout << "right Y: " << std::endl << rightY << std::endl;
           arma::colvec leftMse = leftY - arma::mean(leftY);
           arma::colvec rightMse = rightY - arma::mean(rightY);
-          std::cout << "left mse Y: " << std::endl << leftMse << std::endl;
-          std::cout << "right mse Y: " << std::endl << rightMse << std::endl;
 
           mseNew = arma::accu(leftMse % leftMse) * (1 / (double)Y.size()) +
             arma::accu(rightMse % rightMse) * (1 / (double)Y.size());
-
-          std::cout << "new Mse: " << mseNew << std::endl;
         }
         // update subsequent nodes and min MSE score accordingly
         if (mseNew < msePrev) {
-          std::cout << "prev Mse: " << msePrev << std::endl;
           msePrev = mseNew;
           nd->_featureIndex = feature;
           nd->_splitValue = X(nd->_dataPoints(index(splitIndex)), feature);
           leftNodeDatapoints = nd->_dataPoints(index.head(splitIndex + 1));
           rightNodeDatapoints = nd->_dataPoints(index.tail(index.n_elem - splitIndex - 1));
           splitted = true;
-          std::cout << "index for left node: " << std::endl << index.head(splitIndex + 1) << std::endl;
-          std::cout << "Data points for left node are: " << std::endl << leftNodeDatapoints << std::endl;
-          std::cout << "Data points for right node are: " << std::endl << rightNodeDatapoints << std::endl;
         }
       }
     }
@@ -241,8 +217,6 @@ double Tree::gini(const std::map<double, int>& classSetLeft, const std::map<doub
     leftSize += classVal.second;
     leftScore += classVal.second * classVal.second;
   }
-  std::cout << "leftSize: " << leftSize << std::endl;
-  std::cout << "leftScore: " << leftScore << std::endl;
   if (leftSize != 0.0) {
     giniVal +=  (1.0 - leftScore / (leftSize * leftSize)) * (leftSize / totalSize);
   }
@@ -250,8 +224,6 @@ double Tree::gini(const std::map<double, int>& classSetLeft, const std::map<doub
     rightSize += classVal.second;
     rightScore += classVal.second * classVal.second;
   }
-  std::cout << "rightSize: " << rightSize << std::endl;
-  std::cout << "rightScore: " << rightScore << std::endl;
   if (rightSize != 0.0) {
     giniVal += (1.0 - rightScore / (rightSize * rightSize)) * (rightSize / totalSize);
   }
@@ -282,25 +254,25 @@ arma::colvec Tree::predict(const arma::mat& X) const {
   return Ypred;
 }
 
-void Tree::print() const {
-  std::cout << "Is root a leaf: " << _root->_leaf << std::endl;
-  Tree::printNode(_root);
-}
-
-int Tree::printNode(Node* nd) const {
-  if (nd == nullptr) {
-    return 0;
-  }
-  if (nd->_leaf) {
-    std::cout << "Leaf node with result: " << nd->_classResult << std::endl << std::endl;
-  } else {
-    std::cout << "Not a leaf node" << std::endl;
-    std::cout << "Feature index: " << std::endl << nd->_featureIndex << std::endl;
-    std::cout << "Split value: " << std::endl << nd->_splitValue << std::endl;
-    std::cout << "Left set: " << std::endl << nd->_left->_dataPoints << std::endl;
-    std::cout << "Right set: " << std::endl << nd->_right->_dataPoints << std::endl << std::endl;
-  }
-  Tree::printNode(nd->_left);
-  Tree::printNode(nd->_right);
-  return 0;
-}
+// void Tree::print() const {
+//   std::cout << "Is root a leaf: " << _root->_leaf << std::endl;
+//   Tree::printNode(_root);
+// }
+//
+// int Tree::printNode(Node* nd) const {
+//   if (nd == nullptr) {
+//     return 0;
+//   }
+//   if (nd->_leaf) {
+//     std::cout << "Leaf node with result: " << nd->_classResult << std::endl << std::endl;
+//   } else {
+//     std::cout << "Not a leaf node" << std::endl;
+//     std::cout << "Feature index: " << std::endl << nd->_featureIndex << std::endl;
+//     std::cout << "Split value: " << std::endl << nd->_splitValue << std::endl;
+//     std::cout << "Left set: " << std::endl << nd->_left->_dataPoints << std::endl;
+//     std::cout << "Right set: " << std::endl << nd->_right->_dataPoints << std::endl << std::endl;
+//   }
+//   Tree::printNode(nd->_left);
+//   Tree::printNode(nd->_right);
+//   return 0;
+// }
