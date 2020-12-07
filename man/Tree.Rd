@@ -26,8 +26,8 @@ with the tree (number of features in the data). \itemize{
 
 \item{\code{predict}}{Calculate predictions based on the CART model. This method makes predictions based on the data,
 using the tree model. The predictions are based on the decision rules created in the training stage. \itemize{
-\item Parameter: X - The data matrix, based on which predictions are made
-\item Returns: Y - The vector of predicted values
+\item Parameter: X - data matrix, based on which predictions are made
+\item Returns: Y - vector of predicted values
 }}
 
 \item{\code{print}}{Print the tree structure of the model. The consecutive rows of matrix represent the nodes. The way

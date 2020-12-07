@@ -1,5 +1,14 @@
 ## Cartcpp package
 
+- [Description](#description)
+- [Functionality](#functionality)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [1. Classification](#classification)
+    - [2. Regression](#regression)
+- [Details](#details)
+
+
 ### Description
 A decision tree is a predictive model, which uses a tree structure to go from observations to conclusions.
 Decision trees are one of the most ubiquitous supervised learning tools. At each node of the tree, some
@@ -22,6 +31,39 @@ model also has options for multiple stopping criteria such as maximum depth or m
 required to be a leaf node. Furthermore, the model is able to print its strucutre together with the decision rules in the matrix form, which allows for conveiniet examination. 
 
 
+### Installation
+
+Step 1. Download necessary compiler tools:
+Install [Rtools for Windows](https://cran.r-project.org/bin/windows/Rtools/) and [GFortran for Mac OS](https://gcc.gnu.org/wiki/GFortranBinariesMacOS).
+
+Step 2. Install package devtools in R:
+
+```R
+install.packages("devtools")
+```
+
+Step 3. Build package using devtools:
+
+```R
+devtools::install_github("mrsergazinov/cartcpp")
+```
+
+Step 4. Load the package in R using:
+
+```R
+library(cartcpp)
+```
+
+### Usage
+
+To learn more about the Tree class methods, their parameters, and outputs, consider running:
+```R
+?Tree
+```
+To explore the documentation for any particular method, one could also run:
+```R
+?`Tree$train`
+```
 
 
 

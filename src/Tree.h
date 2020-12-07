@@ -1,3 +1,63 @@
+//' @name Tree$new
+//' @title Constructs a new Tree object
+//' @param ident ID of the tree, must be an integer number
+//' @param treeType 0 for classification tree and 1 for regresssion tree
+//' @param maxNumFeatures Number of features in the data set on which the model is trained
+//' @param numFeatures Number of features selected at each split
+//' @param maxDepth The maximum depth to which the tree is grown
+//' @param minCount Minimum number of data points for a node to qualify as a leaf node
+//' @examples
+//' # Create a new object of class Tree with the given parameters
+//' tr = new(Tree, ident = 123, treeType = 0, maxNumFeatures = 20,
+//' numFeatures = 3, maxDepth = 4, minCount = 2)
+
+//' @name Tree$train
+//' @title Fits a Tree object to the given data
+//' @param X  Data matrix
+//' @param Y  Vector of labels
+//' @examples
+//' # Define a Tree object
+//' tr = new(Tree, ident = 123, treeType = 0, maxNumFeatures = 4,
+//' numFeatures = 3, maxDepth = 10, minCount = 2)
+//' # Create a training set
+//' X = matrix(c(rnorm(16, 0, 2), rnorm(16, 20, 2)), nrow = 8, ncol = 4, byrow = TRUE)
+//' Y = c(0, 0, 1, 1, 2, 2, 2, 2)
+//' # Train the model
+//' tr$train(X, Y)
+
+//' @name Tree$predict
+//' @title Calculates predictions based on the Tree model
+//' @param X  Data matrix
+//' @return Vector of predictions corresponding to the data.
+//' @examples
+//' # Define a tree object
+//' tr = new(Tree, ident = 123, treeType = 0, maxNumFeatures = 4,
+//' numFeatures = 3, maxDepth = 10, minCount = 2)
+//' # Create a training set
+//' X = matrix(c(rnorm(16, 0, 2), rnorm(16, 20, 2)), nrow = 8, ncol = 4, byrow = TRUE)
+//' Y = c(0, 0, 1, 1, 2, 2, 2, 2)
+//' # Train the model
+//' tr$train(X, Y)
+//' Define the test set
+//' Xtest = matrix(c(rnorm(8, 0, 2), rnorm(8, 20, 2)), nrow = 4, ncol = 4, byrow = TRUE)
+//' # Calculate predictions vector
+//' tr$predict(Xtest)
+
+//' @name Tree$print
+//' @title Prints the tree structure in the matrix form.
+//' @description  The consecutive rows of matrix represent the nodes. The matrix is formed as follows: first, the node
+//' is printed, then the recursive calls are made to print
+//' its left and right child nodes respectively. Due to the recursive nature of the print function, the matrix
+//' representing the structure of the tree must be handled with care and requires proper attention.
+//' @return The data matrix, containing the description of the structure of the tree model. The first
+//' column indicates the depth of the node. The second column indicates whether the node is a leaf: 0 - not a leaf
+//' 1 - leaf. The third column identifies the feature index based on which the split was performed. The forth column
+//' gives the splitting value: all data points which have the feature value less than or equal (<=) to the splitting
+//' value are mapped to the left node. Finally, the fifth column indicates the leaf node value if the node is a leaf.
+//' @examples
+//' # Assume a trained and defined Tree object, tr
+//' tr.Print()
+
 #ifndef Tree_H
 #define Tree_H
 #include <map>
@@ -44,12 +104,12 @@ public:
 //' }
 //' @field train Train the CART model on the data. This method recursively builds the tree until some pre-specified
 //' (in the constructor) stopping criteria is reached. \itemize{
-//' \item Parameter: X - The data matrix
-//' \item Parameter: Y - matrix of labels
+//' \item Parameter: X - data matrix
+//' \item Parameter: Y - vector of labels
 //' @field predict Calculate predictions based on the CART model. This method makes predictions based on the data,
 //' using the tree model. The predictions are based on the decision rules created in the training stage. \itemize{
-//' \item Parameter: X - The data matrix, based on which predictions are made
-//' \item Returns: Y - The vector of predicted values
+//' \item Parameter: X - data matrix, based on which predictions are made
+//' \item Returns: Y - vector of predicted values
 //' }
 //' @field print Print the tree structure of the model. The consecutive rows of matrix represent the nodes. The way
 //' the matrix is formed is: first, the node is printed, then the recursive calls are made to print its left and
