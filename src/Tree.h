@@ -115,13 +115,13 @@ protected:
               const double& totalSize) const;
 protected:
   // protected fields
-  arma::uword _maxNumFeatures; // total features available
-  arma::uword _numFeatures; // number of features selected at each split
-  Node* _root;
   int _id;
   int _treeType; // treeType 0: classification tree OR 1: regression tree
+  arma::uword _maxNumFeatures; // total features available
+  arma::uword _numFeatures; // number of features selected at each split
   int _maxDepth; // maxDepth of tree
   int _minCount; // min count of points for a leaf
+  Node* _root;
 };
 
 #endif
