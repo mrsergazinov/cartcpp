@@ -17,3 +17,5 @@ Depends: methods
 LazyData: true
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat
