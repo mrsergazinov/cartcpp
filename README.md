@@ -6,7 +6,7 @@
 - [Usage](#usage)
     - [1. Classification](#classification)
     - [2. Regression](#regression)
-- [Details](#details)
+- [Q&A](#Q&A)
 
 
 ### Description
@@ -60,11 +60,60 @@ To learn more about the Tree class methods, their parameters, and outputs, consi
 ```R
 ?Tree
 ```
-To explore the documentation for any particular method, one could also run:
+Also, to explore the documentation for any particular method, one could also run:
 ```R
 ?`Tree$train`
 ```
 
+#### Classification
+Here is a simple example demonstrating how to use CART model class for the classification purposes (the data here is gnerated by hand):
+```R
+# Example 1: Create a data set with labels, only 2 features
+X = matrix(c(rnorm(100, 0, 2), rnorm(100, 20, 3)), nrow = 100, ncol = 2)
+Y = c(rep(0, 30), rep(1, 30), rep(2, 40))
+# Define a tree object
+tr = new(Tree, ident = 123, treeType = 0, maxNumFeatures = 2,
+numFeatures = 2, maxDepth = 100, minCount = 2)
+# Fit the tree
+tr$train(X, Y)
+# Print the tree structure
+tr$print()
+# Make predictions
+Xtest = matrix(c(rnorm(10, 0, 2), rnorm(10, 20, 3)), nrow = 10, ncol = 2)
+tr$predict(Xtest)
+
+# Example 2: Create a data set with labels, 20 features
+X = matrix(c(rnorm(200, 0, 2), rnorm(200, 20, 3)), nrow = 20, ncol = 20)
+Y = c(rep(0, 5), rep(1, 7), rep(2, 8))
+# Define a tree object
+tr = new(Tree, ident = 123, treeType = 0, maxNumFeatures = 20,
+numFeatures = 5, maxDepth = 100, minCount = 2)
+# Fit the tree
+tr$train(X, Y)
+# Print the tree structure
+tr$print()
+# Make predictions
+Xtest = matrix(c(rnorm(40, 0, 2), rnorm(40, 20, 3)), nrow = 4, ncol = 20)
+tr$predict(Xtest)
+```
+
+#### Regression
+Another way to use CART is for regression. The example below demonstrated how CART model class could be used for the regression purposes:
+```R
+# Example 1: Create a data set with labels with 4 features
+X = matrix(c(rnorm(100, 0, 2), rnorm(100, 20, 3)), nrow = 50, ncol = 4)
+Y = c(rnorm(25, 0, 3), rnorm(25, 10, 1))
+# Define a tree object
+tr = new(Tree, ident = 123, treeType = 1, maxNumFeatures = 4,
+numFeatures = 3, maxDepth = 100, minCount = 2)
+# Fit the tree
+tr$train(X, Y)
+# Print the tree structure
+tr$print()
+# Make predictions
+Xtest = matrix(c(rnorm(10, 0, 2), rnorm(10, 20, 3)), nrow = 5, ncol = 4)
+tr$predict(Xtest)
+```
 
 
 
