@@ -57,13 +57,16 @@ library(cartcpp)
 ### Usage
 
 To learn more about the Tree class methods, their parameters, and outputs, consider running:
+
 ```R
 ?Tree
 ```
-Also, to explore the documentation for any particular method, one could also run:
+Also, to explore the documentation for any particular method(`$new` - constructor, `$train`, `$predict`, `$print`), one could also run:
+
 ```R
 ?`Tree$train`
 ```
+
 
 #### Classification
 Here is a simple example demonstrating how to use CART model class for the classification purposes (the data here is gnerated by hand):
