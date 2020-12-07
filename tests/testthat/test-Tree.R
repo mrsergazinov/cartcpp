@@ -86,6 +86,18 @@ test_that("Input checks work", {
                  c(0, 10, 76, 87.7)), ncol = 2)
   expect_equal(as.vector(tr$predict(Xtest)), c(0, 0, 1, 1))
 
-
+  # toy example 3: regression
+  # create a separable data set: 1 feature
+  X = matrix(c(0, 0.1, 0.05, 0.9, 1, 5.5, 6, 5, 7), ncol = 1)
+  Y = c(2, 2.2, 1.8, 1.5, 2.33, 10, 10.11, 9.5, 9.33)
+  # define a Tree object with maxDepth 1: only 1 split will be performed
+  tr = new(Tree, ident = 0, treeType = 1,
+           maxNumFeatures = 1, numFeatures = 1,
+           maxDepth = 1, minCount = 2)
+  # fit the model
+  tr$train(X, Y)
+  # create a test set
+  Xtest = matrix(c(-1, -0.3, 10.1, 0.32, 4.55), ncol = 1)
+  expect_equal(as.vector(tr$predict(Xtest)), c(1.966, 1.966, 9.735, 1.966, 9.735))
 })
 
