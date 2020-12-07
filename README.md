@@ -115,5 +115,7 @@ Xtest = matrix(c(rnorm(10, 0, 2), rnorm(10, 20, 3)), nrow = 5, ncol = 4)
 tr$predict(Xtest)
 ```
 
+### Q&A
+Please, direct your questions and concerns to my email address, which can be found in my Github account.
 
 
