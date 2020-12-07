@@ -33,7 +33,7 @@ NULL
 #' @name Tree$predict
 #' @title Calculates predictions based on the Tree model
 #' @param X  Data matrix
-#' @return Y Vector of predictions
+#' @return Vector of predictions corresponding to the data.
 #' @examples
 #' # Define a tree object
 #' tr = new(Tree, ident = 123, treeType = 0, maxNumFeatures = 4,
@@ -55,7 +55,7 @@ NULL
 #' is printed, then the recursive calls are made to print
 #' its left and right child nodes respectively. Due to the recursive nature of the print function, the matrix
 #' representing the structure of the tree must be handled with care and requires proper attention.
-#' @return tr The data matrix, containing the description of the structure of the tree model. The first
+#' @return The data matrix, containing the description of the structure of the tree model. The first
 #' column indicates the depth of the node. The second column indicates whether the node is a leaf: 0 - not a leaf
 #' 1 - leaf. The third column identifies the feature index based on which the split was performed. The forth column
 #' gives the splitting value: all data points which have the feature value less than or equal (<=) to the splitting

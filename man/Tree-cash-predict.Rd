@@ -7,7 +7,7 @@
 \item{X}{Data matrix}
 }
 \value{
-Y Vector of predictions
+Vector of predictions corresponding to the data.
 }
 \description{
 Calculates predictions based on the Tree model

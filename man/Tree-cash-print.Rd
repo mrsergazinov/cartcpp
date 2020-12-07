@@ -4,7 +4,7 @@
 \alias{Tree$print}
 \title{Prints the tree structure in the matrix form.}
 \value{
-tr The data matrix, containing the description of the structure of the tree model. The first
+The data matrix, containing the description of the structure of the tree model. The first
 column indicates the depth of the node. The second column indicates whether the node is a leaf: 0 - not a leaf
 1 - leaf. The third column identifies the feature index based on which the split was performed. The forth column
 gives the splitting value: all data points which have the feature value less than or equal (<=) to the splitting

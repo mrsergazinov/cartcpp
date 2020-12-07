@@ -25,6 +25,9 @@ Tree::Tree(const int& ident, const int& treeType, const arma::uword& maxNumFeatu
   if (_numFeatures <= 0) {
     throw std::range_error("Number of features selected at each split should be > 0");
   }
+  if (_maxNumFeatures < _numFeatures) {
+    throw std::range_error("Number of features selected at each split should be (<=) maximum number of features");
+  }
   if (_maxDepth <= 0) {
     throw std::range_error("Max depth > 0");
   }
