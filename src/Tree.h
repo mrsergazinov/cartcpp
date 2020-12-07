@@ -51,7 +51,7 @@
 //' representing the structure of the tree must be handled with care and requires proper attention.
 //' @return The data matrix, containing the description of the structure of the tree model. The first
 //' column indicates the depth of the node. The second column indicates whether the node is a leaf: 0 - not a leaf
-//' 1 - leaf. The third column identifies the feature index based on which the split was performed. The forth column
+//' 1 - leaf. The third column identifies the feature index (indexing starts from 0) based on which the split was performed. The forth column
 //' gives the splitting value: all data points which have the feature value less than or equal (<=) to the splitting
 //' value are mapped to the left node. Finally, the fifth column indicates the leaf node value if the node is a leaf.
 //' @examples
@@ -117,7 +117,7 @@ public:
 //' structure of the tree must be handled with care and requires proper attention. \itemize{
 //' \item Returns: tr - The data matrix, containing the description of the structure of the tree model. The first
 //' column indicates the depth of the node. The second column indicates whether the node is a leaf: 0 - not a leaf
-//' 1 - leaf. The third column identifies the feature index based on which the split was performed. The forth column
+//' 1 - leaf. The third column identifies the feature index (indexing starts with 0) based on which the split was performed. The forth column
 //' gives the splitting value: all data points which have the feature value less than or equal (<=) to the splitting
 //' value are mapped to the left node. Finally, the fifth column indicates the leaf node value if the node is a leaf.
 //' }

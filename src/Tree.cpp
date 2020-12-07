@@ -185,7 +185,7 @@ bool Tree::stop(const Node* nd, arma::colvec &Y) const {
   // Process: check if the node can be split
 
   // check that depth is less than maxDepth
-  if (nd->_depth > _maxDepth) {
+  if (nd->_depth >= _maxDepth) {
     return true;
   }
   // check that more than minCount number of points for a leaf
